@@ -14,7 +14,7 @@ class KeyLetter extends StatelessWidget {
       child = Container();
     } else {
       child = Container(
-        margin: const EdgeInsets.all(5.0),
+        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         height: 48,
         color: const Color(0xffd3d6da),
         child: MaterialButton(
@@ -77,8 +77,10 @@ class KeyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var l = generate();
-    return Row(
-      children: l,
+    return Flexible(
+      child: Row(
+        children: l,
+      ),
     );
   }
 }
@@ -93,7 +95,7 @@ class KeyBoard extends StatelessWidget {
     keyRows.add(const KeyRow(id: 2));
     keyRows.add(const KeyRow(id: 3));
     return Container(
-      constraints: const BoxConstraints(maxWidth: 480),
+      constraints: const BoxConstraints(maxWidth: 480, maxHeight: 200),
       child: Column(
         children: keyRows,
       ),

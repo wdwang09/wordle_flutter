@@ -6,16 +6,13 @@ class Letter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    double boxSize = min(min(size.width / 5, size.height / 5), 60);
-
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      color: Colors.red,
-      width: boxSize,
-      height: boxSize,
-      child: const Center(
-        child: Text("A"),
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.all(5.0),
+        color: Colors.red,
+        child: const Center(
+          child: Text("A"),
+        ),
       ),
     );
   }
@@ -30,30 +27,35 @@ class Word extends StatelessWidget {
     for (var i = 0; i < 5; ++i) {
       letters.add(const Letter());
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: letters,
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: letters,
+      ),
     );
   }
 }
 
-class Words extends StatefulWidget {
-  const Words({Key? key}) : super(key: key);
+class Grid extends StatefulWidget {
+  const Grid({Key? key}) : super(key: key);
 
   @override
-  State<Words> createState() => _WordsState();
+  State<Grid> createState() => _GridState();
 }
 
-class _WordsState extends State<Words> {
+class _GridState extends State<Grid> {
   @override
   Widget build(BuildContext context) {
     List<Word> words = [];
     for (var i = 0; i < 6; ++i) {
       words.add(const Word());
     }
+    double h = max(350, min(420, MediaQuery.of(context).size.width - 310));
     return Container(
+      height: h,
+      width: h / 6 * 5,
       // constraints: const BoxConstraints(maxWidth: 480),
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: words,

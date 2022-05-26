@@ -48,12 +48,14 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: Column(children: [
-        Expanded(child: Container()),
-        const Center(child: Words()),
-        Expanded(child: Container()),
-        const KeyBoard(),
-      ]),
+      body: Column(
+        children: const [
+          // Expanded(child: Container()),
+          Center(child: Grid()),
+          // Expanded(child: Container()),
+          Flexible(child: KeyBoard()),
+        ],
+      ),
     );
   }
 }
