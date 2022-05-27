@@ -8,8 +8,13 @@ class Letter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: const EdgeInsets.all(5.0),
-        color: Colors.red,
+        margin: const EdgeInsets.all(3.0),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
         child: const Center(
           child: Text("A"),
         ),
@@ -54,7 +59,6 @@ class _GridState extends State<Grid> {
     return Container(
       height: h,
       width: h / 6 * 5,
-      // constraints: const BoxConstraints(maxWidth: 480),
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

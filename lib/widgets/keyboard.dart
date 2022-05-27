@@ -11,13 +11,25 @@ class KeyLetter extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
     if (s == " ") {
-      child = Container();
+      child = Container(
+        // TODO
+        // margin: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+        // height: 48,
+      );
     } else {
       child = Container(
-        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+        margin: const EdgeInsets.fromLTRB(3, 0, 3, 0),
         height: 48,
-        color: const Color(0xffd3d6da),
-        child: MaterialButton(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            primary: Colors.black,
+          ),
           onPressed: () {},
           child: Text(s),
         ),
@@ -56,7 +68,7 @@ class KeyRow extends StatelessWidget {
         }
       }
     } else if (id == 3) {
-      var strList = ["Enter"] + "ZXCVBNM".split("") + ["Back"];
+      var strList = ["OK"] + "ZXCVBNM".split("") + ["<-"];
       for (var i = 0; i < strList.length; ++i) {
         if (i == 0 || i == strList.length - 1) {
           l.add(KeyLetter(
@@ -95,7 +107,8 @@ class KeyBoard extends StatelessWidget {
     keyRows.add(const KeyRow(id: 2));
     keyRows.add(const KeyRow(id: 3));
     return Container(
-      constraints: const BoxConstraints(maxWidth: 480, maxHeight: 200),
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 200),
       child: Column(
         children: keyRows,
       ),
