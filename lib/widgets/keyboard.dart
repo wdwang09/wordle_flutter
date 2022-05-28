@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:wordle/state.dart';
 
 class KeyLetter extends StatelessWidget {
-  const KeyLetter({required this.s, this.flexFactor = 1, Key? key})
-      : super(key: key);
-
   final String s;
   final int flexFactor;
+
+  const KeyLetter({required this.s, this.flexFactor = 1, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +19,33 @@ class KeyLetter extends StatelessWidget {
         height: 48,
       );
     } else {
-      child = Container(
-        margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
-        height: 48,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
+      child = Consumer<WordleState>(builder: (context, state, child) {
+        return Container(
+          margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
+          height: 48,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+            ),
+            borderRadius: BorderRadius.circular(5),
           ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: TextButton(
-          style: TextButton.styleFrom(
-            primary: Colors.black,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+            ),
+            onPressed: () {
+              if (s == "OK") {
+                state.pressEnter();
+              } else if (s == "<-") {
+                state.pressBackspace();
+              } else {
+                state.pressKey(s);
+              }
+            },
+            child: Text(s),
           ),
-          onPressed: () {},
-          child: Text(s),
-        ),
-      );
+        );
+      });
     }
     return Flexible(
       fit: FlexFit.tight,

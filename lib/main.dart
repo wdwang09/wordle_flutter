@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:wordle/widgets/grid.dart';
 import 'package:wordle/widgets/keyboard.dart';
+import 'package:wordle/state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,45 +18,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'WORDLE',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'WORDLE'),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    const int wordLength = 5;
+    const int guessTimes = 6;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.title),
+        title: const Text("WORDLE"),
       ),
       body: Center(
-        child: Column(
-          children: const [
-            Flexible(child: Grid()),
-            Flexible(child: KeyBoard()),
-          ],
+        child: ChangeNotifierProvider(
+          create: (context) => WordleState(
+            guessTimes: guessTimes,
+            wordLength: wordLength,
+          ),
+          child: Column(
+            children: const [
+              Flexible(child: Grid()),
+              Flexible(child: KeyBoard()),
+            ],
+          ),
         ),
       ),
     );

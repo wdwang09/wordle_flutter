@@ -1,37 +1,58 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:wordle/state.dart';
 
 class Letter extends StatelessWidget {
-  const Letter({Key? key}) : super(key: key);
+  final int wordIdx;
+  final int letterIdx;
+  const Letter({
+    required this.wordIdx,
+    required this.letterIdx,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: Container(
-        margin: const EdgeInsets.all(3.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Center(
-          child: Text("A"),
-        ),
-      ),
+      child: Consumer<WordleState>(builder: (context, state, child) {
+        return Container(
+            margin: const EdgeInsets.all(3.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: FractionallySizedBox(
+              widthFactor: 0.5,
+              heightFactor: 0.5,
+              child: FittedBox(
+                child: Center(
+                  child: Text(
+                    state.letterList[wordIdx][letterIdx].toUpperCase(),
+                    // style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ));
+      }),
     );
   }
 }
 
 class Word extends StatelessWidget {
-  const Word({Key? key}) : super(key: key);
+  final int wordLength;
+  final int idx;
+  const Word({required this.wordLength, required this.idx, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Letter> letters = [];
-    for (var i = 0; i < 5; ++i) {
-      letters.add(const Letter());
+    for (var i = 0; i < wordLength; ++i) {
+      letters.add(Letter(wordIdx: idx, letterIdx: i));
     }
     return Expanded(
       child: Row(
@@ -42,26 +63,19 @@ class Word extends StatelessWidget {
   }
 }
 
-class Grid extends StatefulWidget {
-  const Grid({Key? key}) : super(key: key);
+class Grid extends StatelessWidget {
+  final int guessTime;
+  final int wordLength;
+  const Grid({this.guessTime = 6, this.wordLength = 5, Key? key})
+      : super(key: key);
 
-  @override
-  State<Grid> createState() => _GridState();
-}
-
-class _GridState extends State<Grid> {
   @override
   Widget build(BuildContext context) {
     List<Word> words = [];
-    for (var i = 0; i < 6; ++i) {
-      words.add(const Word());
+    for (var i = 0; i < guessTime; ++i) {
+      words.add(Word(wordLength: wordLength, idx: i));
     }
-    // double h = max(350, min(420, MediaQuery.of(context).size.width - 310));
     return Container(
-      // height: h,
-      // width: h / 6 * 5,
-      // constraints: BoxConstraints(maxWidth: 350, maxHeight: 420),
-      // constraints: BoxConstraints(maxWidth: 420),
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
