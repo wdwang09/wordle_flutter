@@ -6,7 +6,8 @@ class Letter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return AspectRatio(
+      aspectRatio: 1,
       child: Container(
         margin: const EdgeInsets.all(3.0),
         decoration: BoxDecoration(
@@ -55,10 +56,12 @@ class _GridState extends State<Grid> {
     for (var i = 0; i < 6; ++i) {
       words.add(const Word());
     }
-    double h = max(350, min(420, MediaQuery.of(context).size.width - 310));
+    // double h = max(350, min(420, MediaQuery.of(context).size.width - 310));
     return Container(
-      height: h,
-      width: h / 6 * 5,
+      // height: h,
+      // width: h / 6 * 5,
+      // constraints: BoxConstraints(maxWidth: 350, maxHeight: 420),
+      // constraints: BoxConstraints(maxWidth: 420),
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

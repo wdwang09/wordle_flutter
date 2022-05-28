@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wordle_flutter/widgets/grid.dart';
-import 'package:wordle_flutter/widgets/keyboard.dart';
+import 'package:wordle/widgets/grid.dart';
+import 'package:wordle/widgets/keyboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,13 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: Column(
-        children: const [
-          // Expanded(child: Container()),
-          Center(child: Grid()),
-          // Expanded(child: Container()),
-          Flexible(child: KeyBoard()),
-        ],
+      body: Center(
+        child: Column(
+          children: const [
+            Flexible(child: Grid()),
+            Flexible(child: KeyBoard()),
+          ],
+        ),
       ),
     );
   }

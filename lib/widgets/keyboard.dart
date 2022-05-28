@@ -12,13 +12,12 @@ class KeyLetter extends StatelessWidget {
     Widget child;
     if (s == " ") {
       child = Container(
-        // TODO
-        // margin: const EdgeInsets.fromLTRB(3, 0, 3, 0),
-        // height: 48,
+        margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
+        height: 48,
       );
     } else {
       child = Container(
-        margin: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+        margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
         height: 48,
         decoration: BoxDecoration(
           border: Border.all(
@@ -36,6 +35,7 @@ class KeyLetter extends StatelessWidget {
       );
     }
     return Flexible(
+      fit: FlexFit.tight,
       flex: flexFactor,
       child: child,
     );
@@ -91,6 +91,7 @@ class KeyRow extends StatelessWidget {
     var l = generate();
     return Flexible(
       child: Row(
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: l,
       ),
     );
@@ -108,7 +109,7 @@ class KeyBoard extends StatelessWidget {
     keyRows.add(const KeyRow(id: 3));
     return Container(
       margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 200),
+      constraints: const BoxConstraints(maxWidth: 480),
       child: Column(
         children: keyRows,
       ),

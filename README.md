@@ -1,4 +1,4 @@
-# wordle_flutter
+# Wordle
 
 Wordle in Flutter.
 

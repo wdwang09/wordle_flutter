@@ -1,6 +1,6 @@
 {
-    "name": "wordle_flutter",
-    "short_name": "wordle_flutter",
+    "name": "wordle",
+    "short_name": "wordle",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

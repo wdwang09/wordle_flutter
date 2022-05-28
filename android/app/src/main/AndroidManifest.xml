@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wordle_flutter">
+    package="com.example.wordle">
    <application
-        android:label="wordle_flutter"
+        android:label="wordle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
