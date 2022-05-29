@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wordle/state.dart';
+import 'package:wordle/states/state.dart';
 
 class KeyLetter extends StatelessWidget {
   final String s;
@@ -20,6 +20,24 @@ class KeyLetter extends StatelessWidget {
       );
     } else {
       child = Consumer<WordleState>(builder: (context, state, child) {
+        Color? containerColor;
+        switch (state.keyState[s.toLowerCase()]) {
+          case LetterState.absent:
+            containerColor = Colors.grey;
+            break;
+          case LetterState.present:
+            containerColor = Colors.blue;
+            break;
+          case LetterState.correct:
+            containerColor = Colors.green;
+            break;
+          case LetterState.initial:
+            containerColor = null;
+            break;
+          case null:
+            break;
+        }
+
         return Container(
           margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
           height: 48,
@@ -28,6 +46,7 @@ class KeyLetter extends StatelessWidget {
               color: Colors.black,
             ),
             borderRadius: BorderRadius.circular(5),
+            color: containerColor,
           ),
           child: TextButton(
             style: TextButton.styleFrom(
@@ -42,7 +61,7 @@ class KeyLetter extends StatelessWidget {
                 state.pressKey(s);
               }
             },
-            child: Text(s),
+            child: Text(s.toUpperCase()),
           ),
         );
       });
