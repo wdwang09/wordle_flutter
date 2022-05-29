@@ -5,9 +5,10 @@ import 'package:wordle/states/words.dart';
 enum LetterState { initial, correct, present, absent }
 
 class WordleState extends ChangeNotifier {
-  bool wordsAllowedReady = false;
+  bool isWin = false;
+  bool isWordsAllowedReady = false;
   Set<String> wordsAllowed = {};
-  bool answerReady = false;
+  bool isAnswerReady = false;
   String answer = "";
   final int guessTimes;
   final int wordLength;
@@ -21,17 +22,18 @@ class WordleState extends ChangeNotifier {
   WordleState({required this.guessTimes, required this.wordLength}) {
     readAllowedWords().then((res) {
       wordsAllowed = res;
-      wordsAllowedReady = true;
+      isWordsAllowedReady = true;
     });
 
     reset();
   }
 
   reset() {
-    answerReady = false;
+    isWin = false;
+    isAnswerReady = false;
     generateAnswer(wordLength).then((ans) {
       answer = ans;
-      answerReady = true;
+      isAnswerReady = true;
       print("Answer: $answer");
     });
 
@@ -58,7 +60,7 @@ class WordleState extends ChangeNotifier {
   }
 
   pressKey(String key) {
-    if (!wordsAllowedReady || !answerReady) {
+    if (isWin || !isWordsAllowedReady || !isAnswerReady) {
       return;
     }
     if (currentRowIdx >= letterList.length) {
@@ -73,8 +75,24 @@ class WordleState extends ChangeNotifier {
     }
   }
 
+  pressBackspace() {
+    if (isWin || !isWordsAllowedReady || !isAnswerReady) {
+      return;
+    }
+    if (currentRowIdx >= letterList.length) {
+      return;
+    }
+    for (var letterIdx = wordLength - 1; letterIdx >= 0; --letterIdx) {
+      if (letterList[currentRowIdx][letterIdx] != "") {
+        letterList[currentRowIdx][letterIdx] = "";
+        notifyListeners();
+        return;
+      }
+    }
+  }
+
   pressEnter() {
-    if (!wordsAllowedReady || !answerReady) {
+    if (isWin || !isWordsAllowedReady || !isAnswerReady) {
       return;
     }
     if (currentRowIdx >= letterList.length) {
@@ -89,7 +107,7 @@ class WordleState extends ChangeNotifier {
     }
     currentWord = currentWord.toLowerCase();
     if (!wordsAllowed.contains(currentWord)) {
-      print("The word is invalid.");
+      print("The word '$currentWord' is invalid.");
       return;
     }
     letterStateList[currentRowIdx] = guessWord(currentWord, answer);
@@ -113,23 +131,14 @@ class WordleState extends ChangeNotifier {
           throw "ERROR";
       }
     }
+    if (currentWord.toLowerCase() == answer.toLowerCase()) {
+      isWin = true;
+      print("Win!");
+    }
     ++currentRowIdx;
+    if (!isWin && currentRowIdx == letterList.length) {
+      print("Fail!");
+    }
     notifyListeners();
-  }
-
-  pressBackspace() {
-    if (!wordsAllowedReady || !answerReady) {
-      return;
-    }
-    if (currentRowIdx >= letterList.length) {
-      return;
-    }
-    for (var letterIdx = wordLength - 1; letterIdx >= 0; --letterIdx) {
-      if (letterList[currentRowIdx][letterIdx] != "") {
-        letterList[currentRowIdx][letterIdx] = "";
-        notifyListeners();
-        return;
-      }
-    }
   }
 }
