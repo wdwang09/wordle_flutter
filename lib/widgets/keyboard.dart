@@ -16,31 +16,19 @@ class KeyLetter extends StatelessWidget {
     if (s == " ") {
       child = Container(
         margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
-        height: 48,
+        // height: 48,
       );
     } else {
       child = Consumer<WordleState>(builder: (context, state, child) {
         Color? containerColor;
-        switch (state.keyState[s.toLowerCase()]) {
-          case LetterState.absent:
-            containerColor = Colors.grey;
-            break;
-          case LetterState.present:
-            containerColor = Colors.blue;
-            break;
-          case LetterState.correct:
-            containerColor = Colors.green;
-            break;
-          case LetterState.initial:
-            containerColor = null;
-            break;
-          case null:
-            break;
+        if (state.keyState[s.toLowerCase()] != null) {
+          containerColor = letterStateColor[state.keyState[s.toLowerCase()]];
         }
 
         return Container(
           margin: const EdgeInsets.fromLTRB(3, 5, 3, 5),
-          height: 48,
+          height: double.infinity,
+          // constraints: const BoxConstraints(maxHeight: 48),
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black,
@@ -121,7 +109,7 @@ class KeyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var l = generate();
-    return Flexible(
+    return Expanded(
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: l,
@@ -141,7 +129,7 @@ class KeyBoard extends StatelessWidget {
     keyRows.add(const KeyRow(id: 3));
     return Container(
       margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-      constraints: const BoxConstraints(maxWidth: 480),
+      constraints: const BoxConstraints(maxWidth: 480, maxHeight: 64 * 3),
       child: Column(
         children: keyRows,
       ),

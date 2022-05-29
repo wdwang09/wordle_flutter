@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:wordle/widgets/grid.dart';
 import 'package:wordle/widgets/keyboard.dart';
+import 'package:wordle/widgets/message_box.dart';
 import 'package:wordle/states/state.dart';
 
 void main() {
@@ -55,8 +56,18 @@ class HomePage extends StatelessWidget {
         body: Center(
           child: Column(
             children: const [
-              Flexible(child: Grid()),
-              Flexible(child: KeyBoard()),
+              Flexible(
+                flex: 6,
+                child: Grid(),
+              ),
+              Flexible(
+                flex: 3,
+                child: KeyBoard(),
+              ),
+              Flexible(
+                flex: 1,
+                child: MessageBox(),
+              ),
             ],
           ),
         ),

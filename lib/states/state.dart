@@ -1,8 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:wordle/states/words.dart';
 
 enum LetterState { initial, correct, present, absent }
+
+var letterStateColor = {
+  LetterState.initial: null,
+  LetterState.correct: Colors.green,
+  LetterState.present: Colors.lightBlue,
+  LetterState.absent: Colors.grey
+};
 
 class WordleState extends ChangeNotifier {
   bool isWin = false;
@@ -13,10 +21,11 @@ class WordleState extends ChangeNotifier {
   final int guessTimes;
   final int wordLength;
 
+  bool isGuessWordInvalid = false;
+
   List<List<String>> letterList = [];
   List<List<LetterState>> letterStateList = [];
   int currentRowIdx = 0;
-
   Map<String, LetterState> keyState = {};
 
   WordleState({required this.guessTimes, required this.wordLength}) {
@@ -34,8 +43,12 @@ class WordleState extends ChangeNotifier {
     generateAnswer(wordLength).then((ans) {
       answer = ans;
       isAnswerReady = true;
-      print("Answer: $answer");
+      if (kDebugMode) {
+        print("Answer: $answer");
+      }
     });
+
+    isGuessWordInvalid = false;
 
     letterList = [];
     letterStateList = [];
@@ -66,6 +79,7 @@ class WordleState extends ChangeNotifier {
     if (currentRowIdx >= letterList.length) {
       return;
     }
+    isGuessWordInvalid = false;
     for (var letterIdx = 0; letterIdx < wordLength; ++letterIdx) {
       if (letterList[currentRowIdx][letterIdx] == "") {
         letterList[currentRowIdx][letterIdx] = key.toLowerCase();
@@ -82,6 +96,7 @@ class WordleState extends ChangeNotifier {
     if (currentRowIdx >= letterList.length) {
       return;
     }
+    isGuessWordInvalid = false;
     for (var letterIdx = wordLength - 1; letterIdx >= 0; --letterIdx) {
       if (letterList[currentRowIdx][letterIdx] != "") {
         letterList[currentRowIdx][letterIdx] = "";
@@ -101,13 +116,17 @@ class WordleState extends ChangeNotifier {
     String currentWord = "";
     for (var letterIdx = 0; letterIdx < wordLength; ++letterIdx) {
       if (letterList[currentRowIdx][letterIdx] == "") {
+        isGuessWordInvalid = true;
+        notifyListeners();
         return;
       }
       currentWord += letterList[currentRowIdx][letterIdx];
     }
     currentWord = currentWord.toLowerCase();
     if (!wordsAllowed.contains(currentWord)) {
-      print("The word '$currentWord' is invalid.");
+      // print("The word '$currentWord' is invalid.");
+      isGuessWordInvalid = true;
+      notifyListeners();
       return;
     }
     letterStateList[currentRowIdx] = guessWord(currentWord, answer);
@@ -133,11 +152,12 @@ class WordleState extends ChangeNotifier {
     }
     if (currentWord.toLowerCase() == answer.toLowerCase()) {
       isWin = true;
-      print("Win!");
-    }
-    ++currentRowIdx;
-    if (!isWin && currentRowIdx == letterList.length) {
-      print("Fail!");
+      // print("Win!");
+    } else {
+      ++currentRowIdx;
+      if (currentRowIdx == letterList.length) {
+        // print("Fail!");
+      }
     }
     notifyListeners();
   }

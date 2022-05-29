@@ -18,20 +18,8 @@ class Letter extends StatelessWidget {
       aspectRatio: 1,
       child: Consumer<WordleState>(builder: (context, state, child) {
         Color? containerColor;
-        switch (state.letterStateList[wordIdx][letterIdx]) {
-          case LetterState.absent:
-            containerColor = Colors.grey;
-            break;
-          case LetterState.present:
-            containerColor = Colors.blue;
-            break;
-          case LetterState.correct:
-            containerColor = Colors.green;
-            break;
-          case LetterState.initial:
-            containerColor = null;
-            break;
-        }
+        containerColor =
+            letterStateColor[state.letterStateList[wordIdx][letterIdx]];
 
         return Container(
           margin: const EdgeInsets.all(3.0),
